@@ -1,5 +1,7 @@
 package br.com.igorsalves.bookstoremanager.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +28,11 @@ public class BookService {
       .builder()
       .message("Book created with ID " + savedBook.getId())
       .build();
+  }
+
+  public BookDTO findByID(Long id) {
+    Optional<Book> optionalBook = bookRepository.findById(id);
+    
+    return bookMapper.bookToBookDTO(optionalBook.get());
   }
 }
