@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.com.igorsalves.bookstoremanager.dto.BookDTO;
 import br.com.igorsalves.bookstoremanager.dto.MessageResponseDTO;
 import br.com.igorsalves.bookstoremanager.entity.Book;
+import br.com.igorsalves.bookstoremanager.exception.BookNotFoundException;
 import br.com.igorsalves.bookstoremanager.mapper.BookMapper;
 import br.com.igorsalves.bookstoremanager.repository.BookRepository;
 
@@ -30,9 +31,9 @@ public class BookService {
       .build();
   }
 
-  public BookDTO findByID(Long id) {
-    Optional<Book> optionalBook = bookRepository.findById(id);
+  public BookDTO findByID(Long id) throws BookNotFoundException {
+    Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
     
-    return bookMapper.bookToBookDTO(optionalBook.get());
+    return bookMapper.bookToBookDTO(book);
   }
 }
